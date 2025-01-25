@@ -40,7 +40,7 @@ def get_list_of_cards(df_data: pd.DataFrame) -> list:
 
 
 def get_data_by_date(df_data_: pd.DataFrame, date: str) -> pd.DataFrame | dict:
-    """Получение выборки из датафрейма по дате"""
+    """Получение выборки из датафрейма по дате, принимает строку с датой в формате YYYY-MM-DD HH:MM:SS"""
     # Убираем пустые строки из выборки:
     df_data1 = df_data_.dropna(how="all")
     # Убираем строки без дат:
