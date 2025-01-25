@@ -1,16 +1,13 @@
-import json
+import datetime
 
+date = "2021-05-25 12:05:50"
 
+date_obj = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
 
-data = {
-    "user_currencies": ["USD", "EUR"],
-    "user_stocks": ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"],
-    "user_cards": ["*7197", "*4556"]
-}
+y_m = date_obj.year, date_obj.month  # кортеж чисел  (2021, 5)
 
-# with open(r"..\user_settings.json", "w", encoding="utf-8") as f:
-#     json.dump(data, f)
+if start_date.strftime("%Y-%m-%d %H:%M") == stop_date.strftime("%Y-%m-%d %H:%M"):
+    print("да")
+else:
+    print("нет")
 
-a = None
-b = round(a, 2)
-print(b, type(b))

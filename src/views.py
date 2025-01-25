@@ -1,35 +1,38 @@
-import os
+import datetime
 import re
 import pandas as pd
 import json
 
 from src.utils import (read_excel_file,
                        get_greeting_by_time,
-                       get_data_by_date,
+                       filter_by_date,
                        get_total_spent,
                        get_data_for_card,
-                       get_top_transactions,
-                       get_date)
+                       get_top_transactions,)
+
 from src.settings import (get_card_numbers,
                           get_currencies,
                           get_stocks)
 from src.my_logging import views_logger
-
 from src.external_api import get_currency_rate, get_stock_price, get_stock_price_1  # No error
-
-path_to_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "operations.xlsx")
-path_to_user_settings = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "user_settings.json")
+from config import path_to_file, path_to_user_settings
 
 my_cards = get_card_numbers(path_to_user_settings)  # ['*7197', '*4556']
 my_currencies = get_currencies(path_to_user_settings)  # ['USD', 'EUR']
 my_stocks = get_stocks(path_to_user_settings)  # ['AAPL', 'AMZN', 'GOOGL', 'MSFT', 'TSLA']
 
 
-def create_response(date: str) -> dict:
-    """ Принимает строку с датой в формате YYYY-MM-DD HH:MM:SS, 
-    и возвращает JSON-ответ с данными """
-    dfdata = read_excel_file(path_to_file)
-    df_by_date = get_data_by_date(dfdata, date)
+def create_response(dfdata: pd.DataFrame, date: str) -> dict:
+    """ Принимает данные с транзакциями и
+    строку с датой в формате YYYY-MM-DD HH:MM:SS,
+    и возвращает JSON-ответ с данными
+    """
+    # преобразуем строку с датой в daytime-объект
+    date_obj = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    act_start_date = date_obj.replace(day=1)
+    start_date_line = act_start_date.strftime("%Y-%m-%d %H:%M:%S")
+    # фильтрация по дате с начала месяца до заданной даты
+    df_by_date = filter_by_date(dfdata, start_date_=start_date_line, stop_date_=date)
 
     actual_greeting = get_greeting_by_time(date)
     response = {"greeting": actual_greeting}
@@ -60,7 +63,7 @@ def create_response(date: str) -> dict:
 
     response["currency_rates"] = []
     if my_currencies:
-        timeless_date = get_date(date)  # '2021-12-16'
+        timeless_date = date_obj.strftime("%Y-%m-%d")  # '2021-12-16'
         for item in my_currencies:
             currency_data = {"currency": item}
             try:
@@ -76,7 +79,7 @@ def create_response(date: str) -> dict:
         for elem in my_stocks:
             stock_data = {"stock": elem}
             try:
-                # ! eсли get_stock_price(elem, date), то есть второй аргумент
+                # ! eсли get_stock_price(elem, date), то там есть второй аргумент - date
                 stock_price = get_stock_price_1(elem)
                 stock_data["price"] = round(float(stock_price), 2)
             except Exception as e:
@@ -87,10 +90,11 @@ def create_response(date: str) -> dict:
         views_logger.warning("нет данных по акциям")
 
     views_logger.info("сформирован json - ответ")
-    return json.dumps(response, ensure_ascii=False)
+    return json.dumps(response, ensure_ascii=False, indent=4)
 
 
 if __name__ == "__main__":
+    my_dfdata = read_excel_file(path_to_file)
     test_date = "2021-07-31 5:44:00"
-    result = create_response(test_date)
+    result = create_response(my_dfdata, test_date)
     print(result)

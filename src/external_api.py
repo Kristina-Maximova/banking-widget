@@ -1,9 +1,10 @@
+import datetime
 import os
 
 import requests
 import requests.exceptions
 from dotenv import load_dotenv
-from src.utils import get_date, get_month, get_early_date
+
 from src.my_logging import external_api_logger
 
 load_dotenv()
@@ -53,10 +54,10 @@ def get_stock_price(date_line: str, stock_name: str) -> str:
     """ Функция принимает строку с датой формата YYYY-MM-DD HH:MM:SS и название акции,
     возвращает среднюю за месяц стоимость акции в формате строки"""
     # за некоторые дни нет данных на сайте
-    date = get_date(date_line)
-    month = get_month(date_line)
-    early_date = get_early_date(date)
-    if date != "" and month != "":
+    date_obj = datetime.datetime.strptime(date_line, "%Y-%m-%d %H:%M:%S")
+    date_as_key = date_obj.strftime("%Y-%m-%d")
+    month = date_obj.strftime("%Y-%m")
+    if date_obj:
         try:
             payload = {
                 "function": "MIDPRICE",
@@ -70,27 +71,20 @@ def get_stock_price(date_line: str, stock_name: str) -> str:
             status_code = response.status_code
             if status_code == 200:
                 result = response.json()
-                if  f"{date}" in result['Technical Analysis: MIDPRICE']:
-                    new_result = result['Technical Analysis: MIDPRICE'][f"{date}"]['MIDPRICE']
-                    external_api_logger.info("Получен прайс по акциям")
-                    return new_result
-                elif f"{early_date}" in result['Technical Analysis: MIDPRICE']:
-                    new_result = result['Technical Analysis: MIDPRICE'][f"{early_date}"]['MIDPRICE']
-                    external_api_logger.info("Получен прайс по акциям")
-                    return new_result
-                else:
-                    external_api_logger.warning("Нет данных по акциям на эту дату или израсходована квота запросов")
-                    return "" # можно поменять на return result для уточнения
+
+                new_result = result["Technical Analysis: MIDPRICE"][f"{date_as_key}"]["MIDPRICE"]
+                external_api_logger.info("Получен прайс по акциям")
+                return new_result
             else:
                 return ""
                 external_api_logger.warning(f"Ошибка request-запроса, status_code: {response.status_code}")
-
         except  requests.exceptions.RequestException as e:
             external_api_logger.warning(f"Ошибка {e}")
             return ""
     else:
         external_api_logger.warning("Нет даты для получения курса валюты")
         return ""
+
 
 # для тестовых прогонов:
 def get_stock_price_1(stock_name: str) -> float:
@@ -100,7 +94,7 @@ def get_stock_price_1(stock_name: str) -> float:
         result = response.json()
         for elem in result:
             if elem["symbol"] == stock_name:
-                price =  round(elem["price"], 2)
+                price = round(elem["price"], 2)
             else:
                 continue
         if price:
@@ -114,26 +108,20 @@ def get_stock_price_1(stock_name: str) -> float:
 
 
 if __name__ == "__main__":
-    user_stocks =  ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
+    user_stocks = ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
 
-#     my_date = "2023-01-19 05:44:00"
-#     #   ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
-#     user_stocks = ["AAPL", "AMZN"]
-#
-#     price = get_stock_price("2021-01-19 05:44:00", "AAPL")
-#     print(price, type(price))
-#
-#     # timeless_date = get_date(my_date)
-#     # rate = get_currency_rate(timeless_date, "USD")
-#     # print(rate, type(rate)
-    a = get_stock_price_1("AMZN")
+    #     my_date = "2023-01-19 05:44:00"
+    #     #   ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
+    #     user_stocks = ["AAPL", "AMZN"]
+    #
+    #     price = get_stock_price("2021-01-19 05:44:00", "AAPL")
+    #     print(price, type(price))
+    #
+    #     # timeless_date = get_date(my_date)
+    #     # rate = get_currency_rate(timeless_date, "USD")
+    #     # print(rate, type(rate)
+    #     a = get_stock_price_1("AMZN")
+    #     print(a)
+    #     user_stocks =  ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
+    a = get_stock_price("2021-07-19 12:12:12", "AMZN")
     print(a)
-    user_stocks =  ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
-
-
-
-
-
-
-
-

@@ -1,5 +1,6 @@
 import json
-from src.my_logging import settings_loger
+from src.my_logging import settings_logger
+from config import path_to_user_settings
 
 
 def get_card_numbers(path: str) -> list:
@@ -10,7 +11,7 @@ def get_card_numbers(path: str) -> list:
             cards = data["user_cards"]
             return cards
     except Exception as e:
-        settings_loger.warning(f"Номера карт не получены, ошибка {e}")
+        settings_logger.warning(f"Номера карт не получены, ошибка {e}")
         return []
 
 
@@ -22,11 +23,11 @@ def get_currencies(path: str) -> list:
             cards = data["user_currencies"]
             return cards
     except Exception as e:
-        settings_loger.warning(f"Значения валют не получены, ошибка {e}")
+        settings_logger.warning(f"Значения валют не получены, ошибка {e}")
         return []
 
 
-def get_stocks(path:str) -> list:
+def get_stocks(path: str) -> list:
     """ Считывание валют из настроек в json-файле"""
     try:
         with open(path, "r", encoding="utf-8") as file:
@@ -34,18 +35,13 @@ def get_stocks(path:str) -> list:
             cards = data["user_stocks"]
             return cards
     except Exception as e:
-        settings_loger.warning(f"Значения акций не получены, ошибка {e}")
+        settings_logger.warning(f"Значения акций не получены, ошибка {e}")
         return []
 
+
 if __name__ == "__main__":
-    my_stocks = get_stocks(r"..\user_settings.json")
+    my_stocks = get_stocks(path_to_user_settings)
     print(my_stocks)
 
-    # data = {
-    #     "user_currencies": ["USD", "EUR"],
-    #     "user_stocks": ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"],
-    #     "user_cards": ["*7197", "*4556"]
-    # }
-    #
     # with open(r"..\user_settings.json", "w", encoding="utf-8") as f:
-    #     json.dump(data, f)
+    #     json.dump(data, f, ensure_ascii=False, indent=4)
