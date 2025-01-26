@@ -1,8 +1,3 @@
-import os
-
-import re
-from unittest.mock import inplace
-
 import pandas as pd
 import json
 import datetime
@@ -40,12 +35,17 @@ def get_list_of_cards(df_data: pd.DataFrame) -> list:
     return []
 
 
-def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: str = None) -> pd.DataFrame | str:
-    """ Принимает датафрейм с транзакциями, и
-    2 строки с датой формата ГГГГ-ММ-ДД НН:ММ:SS - границы интервала времени.
-    Если не указано время начала или время конца поиска, оно заменяется текущим временем.
-    Функция возвращает датафрейм в котором даты поля "Дата операции" - объекты datetime.
-     """
+def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: str = None,
+                   to_datetime=False) -> pd.DataFrame | str:
+    """ Фильтрация транзакций по интервалу дат
+    :param df_data_ - датафрейм с данными по транзакциям
+    :param start_date_ - строка формата ГГГГ-ММ-ДД НН:ММ:SS,
+             начало интервала, если не указан - берется текущая дата
+    :param stop_date_ - трока формата ГГГГ-ММ-ДД НН:ММ:SS,
+            конец интервала, если не указан - берется текущая дата
+    :param to_datetime по умолчанию =False. Опционально приведение к типу datetime столбца "Дата операции"
+    :return датафрейм с транзакциям в указанном интервале дат
+  """
     try:
         # Если не переданы значения одной из дат, генерируем текущую дату
         if start_date_ is None:
@@ -60,11 +60,18 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: 
             raise TypeError("Не задан диапазон времени")
         else:
             # пeрeводим столбeц с датой в объект datetime
-            df_data_.iloc[:, 0] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True, format="%d.%m.%Y %H:%M:%S")
+            df_data_["Дата операции"] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True,
+                                                       format="%d.%m.%Y %H:%M:%S")
             # Фильтруем по датам
             filtered_data = df_data_[
                 (df_data_["Дата операции"] >= start_date) & (df_data_["Дата операции"] <= stop_date)]
-            return filtered_data
+            if to_datetime != False:
+                # возвращаем поле "Дата операции" в str тип
+                filtered_data.loc[:, "Дата операции"] = filtered_data["Дата операции"].apply(
+                    lambda x: x.strftime("%Y-%m-%d %H:%M:%S"))
+                return filtered_data
+            else:
+                return filtered_data
     except Exception as e:
         print(f"Не выполнена фильтрация по дате, ошибка: {e}")
 
@@ -86,9 +93,9 @@ def get_total_spent(transactions: list) -> str:
     if transactions:
         amounts = []
         for transaction in transactions:
-            if "Сумма операции" in transaction:
+            if "Сумма платежа" in transaction:
                 try:
-                    amount = float(transaction["Сумма операции"])
+                    amount = float(transaction["Сумма платежа"])
                     if amount < 0:
                         amounts.append(amount)
                     else:
@@ -142,11 +149,14 @@ def get_greeting_by_time(time_string: str) -> str:
         return ""
 
 
+
+
+
 if __name__ == "__main__":
     dfdata = read_excel_file(path_to_file)
 
     my_new_df = filter_by_date(dfdata, "2021-07-31 5:44:00", "2021-08-31 5:44:00")
-    print(my_new_df)
+    print(my_new_df.head())
 
 # Timestamp - так
 # dtype: datetime64[ns] - или так

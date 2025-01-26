@@ -22,7 +22,7 @@ my_currencies = get_currencies(path_to_user_settings)  # ['USD', 'EUR']
 my_stocks = get_stocks(path_to_user_settings)  # ['AAPL', 'AMZN', 'GOOGL', 'MSFT', 'TSLA']
 
 
-def create_response(dfdata: pd.DataFrame, date: str) -> dict:
+def create_main_review(dfdata: pd.DataFrame, date: str) -> dict:
     """ Принимает данные с транзакциями и
     строку с датой в формате YYYY-MM-DD HH:MM:SS,
     и возвращает JSON-ответ с данными
@@ -96,5 +96,5 @@ def create_response(dfdata: pd.DataFrame, date: str) -> dict:
 if __name__ == "__main__":
     my_dfdata = read_excel_file(path_to_file)
     test_date = "2021-07-31 5:44:00"
-    result = create_response(my_dfdata, test_date)
+    result = create_main_review(my_dfdata, test_date)
     print(result)
