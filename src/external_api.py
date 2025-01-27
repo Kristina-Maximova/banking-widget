@@ -110,18 +110,17 @@ def get_stock_price_1(stock_name: str) -> float:
 if __name__ == "__main__":
     user_stocks = ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
 
-    #     my_date = "2023-01-19 05:44:00"
+    my_date = "2023-01-19 05:44:00"
     #     #   ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
     #     user_stocks = ["AAPL", "AMZN"]
     #
     #     price = get_stock_price("2021-01-19 05:44:00", "AAPL")
     #     print(price, type(price))
     #
-    #     # timeless_date = get_date(my_date)
-    #     # rate = get_currency_rate(timeless_date, "USD")
-    #     # print(rate, type(rate)
+    rate = get_currency_rate("2023-01-19", "USD")
+    print(rate, type(rate))
     #     a = get_stock_price_1("AMZN")
     #     print(a)
     #     user_stocks =  ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
-    a = get_stock_price("2021-07-19 12:12:12", "AMZN")
-    print(a)
+    # a = get_stock_price("2021-07-19 12:12:12", "AMZN")
+    # print(a)

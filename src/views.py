@@ -8,13 +8,13 @@ from src.utils import (read_excel_file,
                        filter_by_date,
                        get_total_spent,
                        get_data_for_card,
-                       get_top_transactions,)
+                       get_top_transactions, )
 
 from src.settings import (get_card_numbers,
                           get_currencies,
                           get_stocks)
 from src.my_logging import views_logger
-from src.external_api import get_currency_rate, get_stock_price, get_stock_price_1  # No error
+from src.external_api import get_currency_rate, get_stock_price_1  # No error
 from config import path_to_file, path_to_user_settings
 
 my_cards = get_card_numbers(path_to_user_settings)  # ['*7197', '*4556']
@@ -54,7 +54,7 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> dict:
     for index, row in top_transacts.iterrows():
         top = {"date": top_transacts.loc[index, "Дата платежа"]}
         if not pd.isna(top_transacts.loc[index, "Сумма платежа"]):
-            top["amount"] = float(top_transacts.loc[index, "Сумма платежа"])
+            top["amount"] = abs(float(top_transacts.loc[index, "Сумма платежа"]))
         else:
             top["amount"] = float(0)
         top["category"] = top_transacts.loc[index, "Категория"]
@@ -79,7 +79,10 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> dict:
         for elem in my_stocks:
             stock_data = {"stock": elem}
             try:
-                # ! eсли get_stock_price(elem, date), то там есть второй аргумент - date
+                # get_stock_price_1 можно заменить на get_stock_price,
+                # импортировать из того же модуля
+                # ! eсли get_stock_price(elem, date), то там есть второй аргумент,
+                #  надо вставить   date
                 stock_price = get_stock_price_1(elem)
                 stock_data["price"] = round(float(stock_price), 2)
             except Exception as e:
@@ -90,6 +93,7 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> dict:
         views_logger.warning("нет данных по акциям")
 
     views_logger.info("сформирован json - ответ")
+
     return json.dumps(response, ensure_ascii=False, indent=4)
 
 
