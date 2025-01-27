@@ -14,13 +14,14 @@ class Optional:
 
 def spending_by_category(transactions: pd.DataFrame,
                          category: str,
-                         date: str = None) -> pd.DataFrame:
+                         date: str = None) -> str:
     """
     Фильтрация транзакций по заданной категории трат за 3 мес.
     :param transactions: датафрейм с данными о транзакциях
     :param category: строка с названием категории
     :param date: строка формата DD.MM.YYYY
-    :return: pd.DataFrame: траты по заданной категории за последние три месяца (от переданной даты).
+    :return: json-строка с тратами по заданной категории за последние три месяца
+    (от переданной даты).
     """
     # получаем даты для фильтрации
     if date == None:
@@ -50,4 +51,5 @@ if __name__ == "__main__":
     category = "Супермаркеты"
     my_result = spending_by_category(transacts, category, "28.12.2021")
 
+    # print(transacts.head(10).to_dict(orient="records"))
     print(my_result)

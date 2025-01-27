@@ -54,10 +54,11 @@ def get_stock_price(date_line: str, stock_name: str) -> str:
     """ Функция принимает строку с датой формата YYYY-MM-DD HH:MM:SS и название акции,
     возвращает среднюю за месяц стоимость акции в формате строки"""
     # за некоторые дни нет данных на сайте
-    date_obj = datetime.datetime.strptime(date_line, "%Y-%m-%d %H:%M:%S")
-    date_as_key = date_obj.strftime("%Y-%m-%d")
-    month = date_obj.strftime("%Y-%m")
-    if date_obj:
+    try:
+        date_obj = datetime.datetime.strptime(date_line, "%Y-%m-%d %H:%M:%S")
+        date_as_key = date_obj.strftime("%Y-%m-%d")
+        month = date_obj.strftime("%Y-%m")
+
         try:
             payload = {
                 "function": "MIDPRICE",
@@ -77,12 +78,12 @@ def get_stock_price(date_line: str, stock_name: str) -> str:
                 return new_result
             else:
                 return ""
-                external_api_logger.warning(f"Ошибка request-запроса, status_code: {response.status_code}")
+                external_api_logger.warning(f"Ошибка request-запроса stock_price, status_code: {response.status_code}")
         except  requests.exceptions.RequestException as e:
             external_api_logger.warning(f"Ошибка {e}")
             return ""
-    else:
-        external_api_logger.warning("Нет даты для получения курса валюты")
+    except ValueError as e:
+        external_api_logger.warning(f"Нет даты для получения курса валюты, ошибка {e}")
         return ""
 
 
@@ -92,16 +93,21 @@ def get_stock_price_1(stock_name: str) -> float:
         payload = {"apikey": f"{api_}"}
         response = requests.get(f"{url_}", params=payload)
         result = response.json()
-        for elem in result:
-            if elem["symbol"] == stock_name:
-                price = round(elem["price"], 2)
+        status_code = response.status_code
+        if status_code == 200:
+            for elem in result:
+                if elem["symbol"] == stock_name:
+                    price = round(elem["price"], 2)
+                else:
+                    continue
+            if price:
+                external_api_logger.info("Получен прайс по акциям")
+                return price
             else:
-                continue
-        if price:
-            external_api_logger.info("Получен прайс по акциям")
-            return price
+                return float(0)
         else:
-            return float(0)
+            return ""
+            external_api_logger.warning(f"Ошибка stock_price_1, status_code: {response.status_code}")
     except Exception as e:
         external_api_logger.warning(f"Ошибка{e}")
         return float(0)
@@ -114,13 +120,13 @@ if __name__ == "__main__":
     #     #   ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
     #     user_stocks = ["AAPL", "AMZN"]
     #
-    #     price = get_stock_price("2021-01-19 05:44:00", "AAPL")
-    #     print(price, type(price))
+    # price = get_stock_price("2021-01-19 05:44:00", "AAPL")
+    # print(price, type(price))
     #
-    rate = get_currency_rate("2023-01-19", "USD")
-    print(rate, type(rate))
-    #     a = get_stock_price_1("AMZN")
-    #     print(a)
+    # rate = get_currency_rate("2023-01-19", "USD")
+    # print(rate, type(rate))
+    a = get_stock_price_1("AMZN")
+    print(a)
     #     user_stocks =  ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
     # a = get_stock_price("2021-07-19 12:12:12", "AMZN")
     # print(a)

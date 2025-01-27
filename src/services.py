@@ -31,7 +31,7 @@ def investment_bank(month: str, transactions: list[dict[str, Any]], limit: int =
             else:
                 continue
         services_logger.info("Накопления для инвестменбанка получены")
-        return json.dumps({"investment": round(result, 2)})
+        return  round(result, 2)
     except Exception as e:
         services_logger.warning(f"Ошибка выполнения функции investment_bank: {e}")
 
@@ -63,8 +63,6 @@ if __name__ == "__main__":
     print(invest)
 
 
-
-
     # # Округляем до большего значения с заданным шагом
     # def round_to_next(elem, limit):
     #     num = abs(elem)
@@ -72,3 +70,6 @@ if __name__ == "__main__":
     #     return result
     # a = round_to_next(-0.3, 10)
     # print(a)
+
+    # date_obg = datetime.datetime.strptime(date, "%d.%m.%Y %H:%M:%S")
+    # month_from_date = date_obg.strftime("%Y-%m")
