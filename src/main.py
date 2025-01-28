@@ -6,7 +6,7 @@ import datetime
 
 
 my_dfdata = read_excel_file(path_to_file)
-my_date = "2021-07-31 5:44:00" # строка формата ГГГГ-ММ-ДД HH:MM:SS
+my_date = "2021-07-31 5:44:00" # - строка формата ГГГГ-ММ-ДД HH:MM:SS
 # Если для обработки брать текущую дату, раскомментировать строку:
 # my_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 my_limit = 50   # шаг округления сумм для инвест-накоплений

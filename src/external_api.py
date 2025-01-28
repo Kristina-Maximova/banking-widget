@@ -113,20 +113,11 @@ def get_stock_price_1(stock_name: str) -> float:
         return float(0)
 
 
-if __name__ == "__main__":
-    user_stocks = ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
-
-    my_date = "2023-01-19 05:44:00"
-    #     #   ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
-    #     user_stocks = ["AAPL", "AMZN"]
+# if __name__ == "__main__":
+    # user_stocks = ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
     #
-    # price = get_stock_price("2021-01-19 05:44:00", "AAPL")
-    # print(price, type(price))
+    # my_date = "2023-01-19 05:44:00"
     #
-    # rate = get_currency_rate("2023-01-19", "USD")
-    # print(rate, type(rate))
-    a = get_stock_price_1("AMZN")
-    print(a)
-    #     user_stocks =  ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
-    # a = get_stock_price("2021-07-19 12:12:12", "AMZN")
+    # a = get_stock_price_1("AMZN")
     # print(a)
+

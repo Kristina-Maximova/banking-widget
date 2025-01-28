@@ -77,14 +77,18 @@ def stop_time(date_line: str) -> Callable:
     return my_decorator
 
 
-if __name__ == "__main__":
-    @write_result_to_my_file("../results.json")
-    @stop_time("21.09.2014")
-    def old_time():
-        time = datetime.datetime.now()
-        return time.strftime("%Y-%m-%d")
-    a = old_time()
-    print(a)
+
+
+
+
+# if __name__ == "__main__":
+    # @write_result_to_my_file("../results.json")
+    # @stop_time("21.09.2014")
+    # def old_time():
+    #     time = datetime.datetime.now()
+    #     return time.strftime("%Y-%m-%d")
+    # a = old_time()
+    # print(a)
 
 
 

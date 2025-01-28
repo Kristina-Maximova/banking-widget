@@ -162,11 +162,11 @@ def get_greeting_by_time(time_string: str) -> str:
 
 
 
-if __name__ == "__main__":
-    dfdata = read_excel_file(path_to_file)
-
-    my_new_df = filter_by_date(dfdata, "2021-07-31 5:44:00", "2021-08-31 5:44:00")
-    print(my_new_df.head())
+# if __name__ == "__main__":
+#     dfdata = read_excel_file(path_to_file)
+#
+#     my_new_df = filter_by_date(dfdata, "2021-07-31 5:44:00", "2021-08-31 5:44:00")
+#     print(my_new_df.head())
 
 
 # Timestamp - так

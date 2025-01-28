@@ -15,7 +15,7 @@ from src.settings import (get_card_numbers,
                           get_currencies,
                           get_stocks)
 from src.my_logging import views_logger
-from src.external_api import get_currency_rate, get_stock_price_1  # No error
+from src.external_api import get_currency_rate, get_stock_price_1  # добавить get_stock_price
 from config import path_to_file, path_to_user_settings
 
 my_cards = get_card_numbers(path_to_user_settings)  # ['*7197', '*4556']
@@ -119,10 +119,10 @@ def create_investment_review(data: pd.DataFrame, date: str, limit: int = 50) -> 
         return json.dumps({"investment": None}, ensure_ascii=False, indent=4)
 
 
-if __name__ == "__main__":
-    my_dfdata = read_excel_file(path_to_file)
-    test_date = "2021-07-31 5:44:00"
-    result = create_main_review(my_dfdata, test_date)
-    # result_1 = create_investment_review(my_dfdata, test_date, 50)
-
-    print(result)
+# if __name__ == "__main__":
+#     my_dfdata = read_excel_file(path_to_file)
+#     test_date = "2021-07-31 5:44:00"
+#     result = create_main_review(my_dfdata, test_date)
+#     # result_1 = create_investment_review(my_dfdata, test_date, 50)
+#
+#     print(result)

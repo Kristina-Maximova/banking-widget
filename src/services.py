@@ -53,10 +53,10 @@ def check_by_month(date: str, my_month: str) -> bool:
     # Фильтруем по месяцу года
 
 
-if __name__ == "__main__":
-    new_month = "2021-12"
-    df_data = read_excel_file(path_to_file)
-    this_transactions = list(df_data.to_dict(orient="records"))[0:10]  # тут даты так: '31.12.2021 16:44:00'
+# if __name__ == "__main__":
+#     new_month = "2021-12"
+    # df_data = read_excel_file(path_to_file)
+    # this_transactions = list(df_data.to_dict(orient="records"))[0:10]  # тут даты так: '31.12.2021 16:44:00'
     # a = investment_bank(new_month, this_transactions, 50)
 
     # # Округляем до большего значения с заданным шагом

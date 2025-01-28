@@ -39,9 +39,9 @@ def get_stocks(path: str) -> list:
         return []
 
 
-if __name__ == "__main__":
-    my_stocks = get_stocks(path_to_user_settings)
-    print(my_stocks)
+# if __name__ == "__main__":
+#     my_stocks = get_stocks(path_to_user_settings)
+#     print(my_stocks)
 
     # with open(r"..\user_settings.json", "w", encoding="utf-8") as f:
     #     json.dump(data, f, ensure_ascii=False, indent=4)
