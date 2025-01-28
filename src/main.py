@@ -19,7 +19,7 @@ def main() -> list:
     - инвест-копилка
     - траты по категории
     """
-    date_obj = datetime.datetime.strptime(my_date, "%d.%m.%Y %H:%M:%S")
+    date_obj = datetime.datetime.strptime(my_date, "%Y-%m-%d %H:%M:%S")
     result = []
     to_home_page = create_main_review(my_dfdata, my_date)
     result.append(to_home_page)

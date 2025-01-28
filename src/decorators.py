@@ -2,7 +2,9 @@ import json
 from functools import wraps
 from typing import Callable
 from freezegun import freeze_time
-import datetime
+from datetime import date
+
+
 from src.my_logging import decorators_logger
 from config import path_to_file_
 
@@ -22,7 +24,6 @@ def write_result(func: Callable) -> Callable:
         return result  # Возвращаем результат функции
 
     return wrapper
-
 
 
 # def write_result(func: Callable) -> Callable:
@@ -76,20 +77,13 @@ def stop_time(date_line: str) -> Callable:
 
     return my_decorator
 
-
-
-
-
-
 # if __name__ == "__main__":
-    # @write_result_to_my_file("../results.json")
-    # @stop_time("21.09.2014")
-    # def old_time():
-    #     time = datetime.datetime.now()
-    #     return time.strftime("%Y-%m-%d")
-    # a = old_time()
-    # print(a)
-
-
-
-
+# @write_result_to_my_file("../results.json")
+# @stop_time("21.09.2014")
+# def old_time():
+#     time = datetime.datetime.now()
+#     return time.strftime("%Y-%m-%d")
+# a = old_time()
+# print(a)
+today = date.today()
+print(today)

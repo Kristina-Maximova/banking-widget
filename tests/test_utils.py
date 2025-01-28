@@ -1,5 +1,5 @@
 from unittest.mock import patch
-
+import pandas as pd
 import pytest
 from src.utils import (read_excel_file, get_list_of_cards,
                        get_data_for_card, get_total_spent,
@@ -37,7 +37,7 @@ def test_get_list_of_cards(my_test_data):
 
 
 def test_filter_by_date(my_test_data):
-    result = filter_by_date(my_test_data, '2021-12-30 17:50:30', '2021-12-31 17:50:30')
+    result = filter_by_date(my_test_data, '2021-12-30 17:50:30', '2021-12-31 17:50:30', to_datetime=False)
     assert (result.head(1).to_dict(orient="records") ==
             [{'MCC': 5411.0,
               'Бонусы (включая кэшбэк)': 1,
@@ -72,6 +72,24 @@ def test_get_top_transactions(my_test_data):
               'Описание': 'Константин Л.',
               'Сумма операции': -20000.0,
               'Сумма платежа': -20000.0}])
+
+
+def test_get_list_of_cards_wrong_data():
+    """ Обработка неверных данных"""
+    this_fake_datas = pd.DataFrame([{"fake": 1}, {"fake1": 11}])
+    result = get_list_of_cards(this_fake_datas)
+    dataless_data =  pd.DataFrame([])
+    result1 =  get_list_of_cards(dataless_data)
+    assert result == []
+    assert result1 == []
+
+
+
+def test_filter_by_date_no_date(my_test_data):
+    """ Ошибка, если не задан ходя бы один временной параметр"""
+    result = filter_by_date(my_test_data)
+    pass
+
 
 
 

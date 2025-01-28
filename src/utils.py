@@ -64,7 +64,9 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: 
         else:
             stop_date = datetime.datetime.strptime(stop_date_, "%Y-%m-%d %H:%M:%S")
         if start_date.strftime("%Y-%m-%d %H:%M") == stop_date.strftime("%Y-%m-%d %H:%M"):
-            raise TypeError("Не задан диапазон времени")
+
+            raise ValueError("Не задан диапазон времени")
+
         else:
             # пeрeводим столбeц с датой в объект datetime
             df_data_["Дата операции"] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True,
@@ -76,8 +78,9 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: 
                 return filtered_data
             else:
                 # возвращаем поле "Дата операции" в исходный str тип
+                utils_logger.info("возвращаем столбец 'Дата операции' к исходному типу строки")
                 # filtered_data["Дата операции"] = filtered_data["Дата операции"]. apply(lambda x: x.strftime("%d.%m.%Y %H:%M:%S"))
-                filtered_data.loc[:,"Дата операции"] = filtered_data["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
+                filtered_data["Дата операции"] = filtered_data["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
                 return filtered_data
     except Exception as e:
         print(f"Не выполнена фильтрация по дате, ошибка: {e}")
@@ -93,6 +96,7 @@ def get_data_for_card(df_data: pd.DataFrame, card: str) -> list:
         except Exception as e:
             utils_logger.warning(f"Ошибка {e}")
             return []
+    return []
 
 
 def get_total_spent(transactions: list) -> str:
@@ -130,7 +134,6 @@ def get_top_transactions(df_data: pd.DataFrame) -> pd.DataFrame | dict:
             return top_transactions
         except Exception as e:
             utils_logger.warning(f"Ошибка {e}")
-            print(f"ошибка {e}")
             return {}
 
 
@@ -159,14 +162,14 @@ def get_greeting_by_time(time_string: str) -> str:
 
 
 
-# if __name__ == "__main__":
-#     df_data_= read_excel_file(path_to_file)
+if __name__ == "__main__":
+    df_data_1 = read_excel_file(path_to_file)
+    df_data_2 = filter_by_date(df_data_1,start_date_="2021-12-01 01:00:00",  stop_date_="2021-12-08 01:00:00" , to_datetime=False)
+
 #     df_data_["Дата операции"] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True,
 #                                                format="%d.%m.%Y %H:%M:%S")
-#
 #     df_data_["Дата операции"] = df_data_["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
-#     print (df_data_.head(3))
-#
-#   Убираем пустые строки из выборки:
-#   df_data1 = df_data_.dropna(how="all")
+
+    print (df_data_2.head(4))
+
 

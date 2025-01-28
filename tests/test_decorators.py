@@ -1,8 +1,10 @@
-
+import datetime
 from unittest.mock import MagicMock
 import json
 import pytest
-from src.decorators import write_result, write_result_to_my_file
+from src.decorators import write_result, write_result_to_my_file, stop_time
+from datetime import date
+
 
 
 
@@ -29,4 +31,13 @@ def test_write_result_to_my_file():
 
     with pytest.raises(ValueError, match="could not convert string to float"):
         example_function()
+
+
+def test_stop_time():
+    @stop_time("2012-01-31 12:12:12")
+    def current_time():
+        my_current_day = date.today()
+        return my_current_day
+    my_fake_time =  current_time()
+    assert my_fake_time != date.today()
 

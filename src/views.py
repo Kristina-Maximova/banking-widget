@@ -33,7 +33,7 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> str:
         date_obj = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
         act_start_date = date_obj.replace(day=1)
         start_date_line = act_start_date.strftime("%Y-%m-%d %H:%M:%S")
-        # фильтрация по дате с начала месяца до заданной даты
+        # фильтруем по дате с начала месяца до заданной даты
         df_by_date = filter_by_date(dfdata, start_date_=start_date_line, stop_date_=date, to_datetime=False)
 
         actual_greeting = get_greeting_by_time(date)
@@ -65,18 +65,18 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> str:
             response["top_transactions"].append(top)
         views_logger.info("Закончили собирать данные топ транзакций")
 
-        # response["currency_rates"] = []
-        # if my_currencies:
-        #     timeless_date = date_obj.strftime("%Y-%m-%d")  # '2021-12-16'
-        #     for item in my_currencies:
-        #         currency_data = {"currency": item}
-        #         try:
-        #             currency_data["rate"] = get_currency_rate(timeless_date, item)  # отдает float
-        #         except Exception:
-        #             views_logger.warning("не получены курсы валют")
-        #         response["currency_rates"].append(currency_data)
-        # else:
-        #     views_logger.warning("Нет данных по валютам")
+        response["currency_rates"] = []
+        if my_currencies:
+            timeless_date = date_obj.strftime("%Y-%m-%d")  # '2021-12-16'
+            for item in my_currencies:
+                currency_data = {"currency": item}
+                try:
+                    currency_data["rate"] = get_currency_rate(timeless_date, item)  # отдает float
+                except Exception:
+                    views_logger.warning("не получены курсы валют")
+                response["currency_rates"].append(currency_data)
+        else:
+            views_logger.warning("Нет данных по валютам")
         views_logger.info("Закончили собирать данные курсов валют")
 
         response["stock_prices"] = []
@@ -104,6 +104,7 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> str:
 
     except Exception as e:
         views_logger.error(f"ошибка даты для отчета, ошибка {e}")
+        return ""
 
 
 def create_investment_review(data: pd.DataFrame, date: str, limit: int = 50) -> str:
