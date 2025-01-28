@@ -34,7 +34,7 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> str:
         act_start_date = date_obj.replace(day=1)
         start_date_line = act_start_date.strftime("%Y-%m-%d %H:%M:%S")
         # фильтрация по дате с начала месяца до заданной даты
-        df_by_date = filter_by_date(dfdata, start_date_=start_date_line, stop_date_=date)
+        df_by_date = filter_by_date(dfdata, start_date_=start_date_line, stop_date_=date, to_datetime=False)
 
         actual_greeting = get_greeting_by_time(date)
         response = {"greeting": actual_greeting}
@@ -111,7 +111,7 @@ def create_investment_review(data: pd.DataFrame, date: str, limit: int = 50) -> 
         transactions = list(data.to_dict(orient="records"))
         date_obg = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
         my_month = date_obg.strftime("%Y-%m")
-        to_response = investment_bank(my_month, transactions, 50)
+        to_response = investment_bank(my_month, transactions, limit)
         views_logger.info("Сформирован отчет по инвест-накоплениям")
         return json.dumps({"investment": round(to_response, 2)}, ensure_ascii=False, indent=4)
     except Exception as e:
@@ -122,7 +122,7 @@ def create_investment_review(data: pd.DataFrame, date: str, limit: int = 50) -> 
 if __name__ == "__main__":
     my_dfdata = read_excel_file(path_to_file)
     test_date = "2021-07-31 5:44:00"
-    # result = create_main_review(my_dfdata, test_date)
+    result = create_main_review(my_dfdata, test_date)
     # result_1 = create_investment_review(my_dfdata, test_date, 50)
 
     print(result)

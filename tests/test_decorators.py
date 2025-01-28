@@ -5,7 +5,7 @@ import pytest
 from src.decorators import write_result
 
 
-@pytest.mark.test
+
 def test_write_result():
     mock_json = MagicMock()
     json.dump = mock_json

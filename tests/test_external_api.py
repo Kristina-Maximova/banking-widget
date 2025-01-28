@@ -3,7 +3,7 @@ from src.external_api import get_currency_rate, get_stock_price, get_stock_price
 import pytest
 
 
-@pytest.mark.test
+
 @patch("requests.get")
 def test_get_currency_rate(mock_get):
     """ Тест на корректную работу """
@@ -15,7 +15,7 @@ def test_get_currency_rate(mock_get):
     mock_get.assert_called_once()
 
 
-@pytest.mark.test
+
 @patch("requests.get")
 def test_get_stock_price(mock_get):
     """ Тест на корректную работу """
@@ -27,13 +27,13 @@ def test_get_stock_price(mock_get):
     mock_get.assert_called_once()
 
 
-@pytest.mark.test
+
 def test_get_stock_price_no_date():
     """ Тест обработка пустой даты """
     assert get_stock_price("", "AAPL") == ""
 
 
-@pytest.mark.test
+
 @patch("requests.get")
 def test_get_stock_price_1(mock_get):
     """ Обработка корректной работы"""

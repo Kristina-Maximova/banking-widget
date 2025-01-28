@@ -6,12 +6,19 @@ import datetime
 
 
 my_dfdata = read_excel_file(path_to_file)
-my_date = "2021-07-31 5:44:00" # строка формата ГГГГ-ММ-ДД
+my_date = "2021-07-31 5:44:00" # строка формата ГГГГ-ММ-ДД HH:MM:SS
+# Если для обработки брать текущую дату, раскомментировать строку:
+# my_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 my_limit = 50   # шаг округления сумм для инвест-накоплений
 my_category = "Супермаркеты"
 
-def main(date: str) -> list:
-
+def main() -> list:
+    """ Возвращает список из 3х json строк
+    с отчетами по
+    - страница главная
+    - инвест-копилка
+    - траты по категории
+    """
     date_obj = datetime.datetime.strptime(my_date, "%d.%m.%Y %H:%M:%S")
     result = []
     to_home_page = create_main_review(my_dfdata, my_date)
@@ -28,4 +35,4 @@ def main(date: str) -> list:
 
 
 if __name__ == "__main__":
-    main(my_date)
+    main()

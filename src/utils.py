@@ -1,6 +1,9 @@
 import pandas as pd
 import json
 import datetime
+
+import pytest
+
 from src.my_logging import utils_logger
 
 from config import path_to_file, path_to_user_settings
@@ -20,6 +23,10 @@ def read_excel_file(path: str) -> pd.DataFrame | dict:
         return {}
 
 
+
+
+
+
 def get_list_of_cards(df_data: pd.DataFrame) -> list:
     "Из данных выводит список уникальных номеров карт"
     # ['*5441', nan, '*5507', '*7197', '*1112', '*5091', '*4556', '*6002']
@@ -36,7 +43,7 @@ def get_list_of_cards(df_data: pd.DataFrame) -> list:
 
 
 def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: str = None,
-                   to_datetime=False) -> pd.DataFrame | str:
+                   to_datetime: bool = False) -> pd.DataFrame | str:
     """ Фильтрация транзакций по интервалу дат
     :param df_data_ - датафрейм с данными по транзакциям
     :param start_date_ - строка формата ГГГГ-ММ-ДД НН:ММ:SS,
@@ -65,12 +72,12 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: 
             # Фильтруем по датам
             filtered_data = df_data_[
                 (df_data_["Дата операции"] >= start_date) & (df_data_["Дата операции"] <= stop_date)]
-            if to_datetime != False:
-                # возвращаем поле "Дата операции" в str тип
-                filtered_data.loc[:, "Дата операции"] = filtered_data["Дата операции"].apply(
-                    lambda x: x.strftime("%Y-%m-%d %H:%M:%S"))
+            if to_datetime:
                 return filtered_data
             else:
+                # возвращаем поле "Дата операции" в исходный str тип
+                # filtered_data["Дата операции"] = filtered_data["Дата операции"]. apply(lambda x: x.strftime("%d.%m.%Y %H:%M:%S"))
+                filtered_data["Дата операции"] = filtered_data["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
                 return filtered_data
     except Exception as e:
         print(f"Не выполнена фильтрация по дате, ошибка: {e}")
@@ -145,6 +152,9 @@ def get_greeting_by_time(time_string: str) -> str:
                 return "Доброй ночи"
             else:
                 return ""
+        else:
+            utils_logger.warning("неверный формат даты для get_greeting_by_time")
+            return ""
     except ValueError:
         return ""
 
@@ -157,6 +167,7 @@ if __name__ == "__main__":
 
     my_new_df = filter_by_date(dfdata, "2021-07-31 5:44:00", "2021-08-31 5:44:00")
     print(my_new_df.head())
+
 
 # Timestamp - так
 # dtype: datetime64[ns] - или так
