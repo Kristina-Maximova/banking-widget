@@ -50,6 +50,7 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> str:
                 response["cards"].append(cards_data)
         else:
             views_logger.warning("Данные по картам отсутствуют")
+        views_logger.info("Закончили собирать данные по картам")
 
         response["top_transactions"] = []
         top_transacts = get_top_transactions(df_by_date)  # тут df
@@ -62,19 +63,21 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> str:
             top["category"] = top_transacts.loc[index, "Категория"]
             top["description"] = top_transacts.loc[index, "Описание"]
             response["top_transactions"].append(top)
+        views_logger.info("Закончили собирать данные топ транзакций")
 
-        response["currency_rates"] = []
-        if my_currencies:
-            timeless_date = date_obj.strftime("%Y-%m-%d")  # '2021-12-16'
-            for item in my_currencies:
-                currency_data = {"currency": item}
-                try:
-                    currency_data["rate"] = get_currency_rate(timeless_date, item)  # отдает float
-                except Exception:
-                    views_logger.warning("не получены курсы валют")
-                response["currency_rates"].append(currency_data)
-        else:
-            views_logger.warning("Нет данных по валютам")
+        # response["currency_rates"] = []
+        # if my_currencies:
+        #     timeless_date = date_obj.strftime("%Y-%m-%d")  # '2021-12-16'
+        #     for item in my_currencies:
+        #         currency_data = {"currency": item}
+        #         try:
+        #             currency_data["rate"] = get_currency_rate(timeless_date, item)  # отдает float
+        #         except Exception:
+        #             views_logger.warning("не получены курсы валют")
+        #         response["currency_rates"].append(currency_data)
+        # else:
+        #     views_logger.warning("Нет данных по валютам")
+        views_logger.info("Закончили собирать данные курсов валют")
 
         response["stock_prices"] = []
         if my_stocks:
@@ -93,6 +96,7 @@ def create_main_review(dfdata: pd.DataFrame, date: str) -> str:
                 response["stock_prices"].append(stock_data)
         else:
             views_logger.warning("нет данных по акциям")
+        views_logger.info("Закончили собирать данные по акциям")
 
         views_logger.info("сформирован json - ответ")
 
@@ -119,10 +123,10 @@ def create_investment_review(data: pd.DataFrame, date: str, limit: int = 50) -> 
         return json.dumps({"investment": None}, ensure_ascii=False, indent=4)
 
 
-# if __name__ == "__main__":
-#     my_dfdata = read_excel_file(path_to_file)
-#     test_date = "2021-07-31 5:44:00"
-#     result = create_main_review(my_dfdata, test_date)
-#     # result_1 = create_investment_review(my_dfdata, test_date, 50)
-#
-#     print(result)
+if __name__ == "__main__":
+    my_df_data = read_excel_file(path_to_file)
+    test_date = "2021-07-31 5:44:00"
+    # result = create_main_review(my_df_data, test_date)
+    result_1 = create_investment_review(my_df_data, test_date, 50)
+
+    print(result_1)

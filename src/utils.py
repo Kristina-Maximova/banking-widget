@@ -77,7 +77,7 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: 
             else:
                 # возвращаем поле "Дата операции" в исходный str тип
                 # filtered_data["Дата операции"] = filtered_data["Дата операции"]. apply(lambda x: x.strftime("%d.%m.%Y %H:%M:%S"))
-                filtered_data["Дата операции"] = filtered_data["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
+                filtered_data.loc[:,"Дата операции"] = filtered_data["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
                 return filtered_data
     except Exception as e:
         print(f"Не выполнена фильтрация по дате, ошибка: {e}")
@@ -140,22 +140,19 @@ def get_greeting_by_time(time_string: str) -> str:
     try:
         date_obj = datetime.datetime.strptime(time_string, "%Y-%m-%d %H:%M:%S")
         hour = date_obj.hour
-        if hour:
-            utils_logger.info("Подбираем приветствие...")
-            if 5 <= hour < 12:
-                return "Доброе утро"
-            elif 12 <= hour < 17:
-                return "Добрый день"
-            elif 17 <= hour < 22:
-                return "Добрый вечер"
-            elif 22 <= hour <= 24 or 0 <= hour < 5:
-                return "Доброй ночи"
-            else:
-                return ""
+        utils_logger.info("Подбираем приветствие...")
+        if 5 <= hour < 12:
+            return "Доброе утро"
+        elif 12 <= hour < 17:
+            return "Добрый день"
+        elif 17 <= hour < 22:
+            return "Добрый вечер"
+        elif 22 <= hour < 24 or 0 <= hour < 5:
+            return "Доброй ночи"
         else:
-            utils_logger.warning("неверный формат даты для get_greeting_by_time")
             return ""
     except ValueError:
+        utils_logger.warning("неверный формат даты для get_greeting_by_time")
         return ""
 
 
@@ -163,14 +160,13 @@ def get_greeting_by_time(time_string: str) -> str:
 
 
 # if __name__ == "__main__":
-#     dfdata = read_excel_file(path_to_file)
+#     df_data_= read_excel_file(path_to_file)
+#     df_data_["Дата операции"] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True,
+#                                                format="%d.%m.%Y %H:%M:%S")
 #
-#     my_new_df = filter_by_date(dfdata, "2021-07-31 5:44:00", "2021-08-31 5:44:00")
-#     print(my_new_df.head())
+#     df_data_["Дата операции"] = df_data_["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
+#     print (df_data_.head(3))
+#
+#   Убираем пустые строки из выборки:
+#   df_data1 = df_data_.dropna(how="all")
 
-
-# Timestamp - так
-# dtype: datetime64[ns] - или так
-
-# Убираем пустые строки из выборки:
-# df_data1 = df_data_.dropna(how="all")
