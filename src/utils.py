@@ -72,9 +72,19 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: 
             else:
                 # возвращаем поле "Дата операции" в исходный str тип
                 utils_logger.info("возвращаем столбец 'Дата операции' к исходному типу строки")
-                # filtered_data["Дата операции"] =
-                # filtered_data["Дата операции"]. apply(lambda x: x.strftime("%d.%m.%Y %H:%M:%S"))
-                filtered_data["Дата операции"] = filtered_data["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
+                # устанавливаем индекс на столбец с датами, создаем копию датафрейма
+                filtered_data = filtered_data.set_index("Дата операции").copy()
+                # и с индексом не возникает ошибок с преобразованием в строку
+                # но тогда получается и столбец "дата операции" и индекс  "дата операции"
+                filtered_data["Дата операции"] = filtered_data.index.strftime("%d.%m.%Y %H:%M:%S")
+                # удаление индекса, останется только стролбец с датой стр, но в конце справа
+                filtered_data.reset_index(drop=True, inplace=True)
+                # перемещение столбца "Дата операции" на первое место
+                # - Вначале удаляем столбец "Дата операции"
+                mean_date = filtered_data["Дата операции"]
+                filtered_data = filtered_data.drop("Дата операции", axis=1)
+                # - Затем вставляем его на первое место
+                filtered_data.insert(0, "Дата операции", mean_date)
                 return filtered_data
     except Exception as e:
         print(f"Не выполнена фильтрация по дате, ошибка: {e}")
@@ -158,12 +168,32 @@ def get_greeting_by_time(time_string: str) -> str:
 
 if __name__ == "__main__":
     df_data_1 = read_excel_file(path_to_file)
-    df_data_2 = filter_by_date(df_data_1, start_date_="2021-12-01 01:00:00", stop_date_="2021-12-08 01:00:00",
-                               to_datetime=False)
-    df_data_3 = list(df_data_2.to_dict(orient="records"))
+    # df_data_2 = filter_by_date(df_data_1, start_date_="2021-12-01 01:00:00", stop_date_="2021-12-08 01:00:00",
+    #                            to_datetime=False)
+    df_data_1["Дата операции"] = pd.to_datetime(df_data_1["Дата операции"], dayfirst=True,
+                                               format="%d.%m.%Y %H:%M:%S")
 
+    # устанавливаем индекс на столбец с датами, создаем копию датафрейма
+    df_data_1_1 = df_data_1.set_index("Дата операции").copy()
+    # и с индексом не возникает ошибок с преобразованием в строку
+    # но тогда получается и столбец "дата операции" и индекс  "дата операции"
+    df_data_1_1["Дата операции"] =  df_data_1_1.index.strftime("%d.%m.%Y %H:%M:%S")
+    # удаление индекса, останется только стролбец с датой стр, но в конце справа
+    df_data_1_1. reset_index (drop= True, inplace= True)
+    # перемещение столбца "Дата операции" на первое место
+    # - Вначале удаляем столбец "Дата операции"
+    mean_date = df_data_1_1["Дата операции"]
+    df_data_1_1 = df_data_1_1.drop("Дата операции", axis=1)
+    # - Затем вставляем его на первое место
+    df_data_1_1.insert(0, "Дата операции", mean_date)
+
+
+
+    # преобразование в список словарей
+    # df_data_3 = list(df_data_2.to_dict(orient="records"))
+    #  2 варианта приведения datetime-объекта к строке.
     #     df_data_["Дата операции"] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True,
     #                                                format="%d.%m.%Y %H:%M:%S")
     #     df_data_["Дата операции"] = df_data_["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
 
-    print(df_data_2.head(4))
+    print(df_data_1_1.head(6))

@@ -12,10 +12,10 @@ def test_create_main_review(mock_get_1, mock_get_2, my_test_data):
     date_to_test = "2021-12-30 01:00:00"
     result = create_main_review(dfdata_to_test, date_to_test)
     mock_get_1.assert_called()
-    mock_get_2.accert_called()
+    mock_get_2.assert_called()
 
-    mock_get_1.assert_called()
-    mock_get_2.accert_called()
+
+
 
 
 def test_create_main_review_wrong_data():
