@@ -1,9 +1,10 @@
 import json
+from typing import Any
 
 from src.my_logging import settings_logger
 
 
-def get_card_numbers(path: str) -> list:
+def get_card_numbers(path: str) -> list | Any:
     """ Функция для считывания номеров карт из json-файла """
     try:
         with open(path, "r", encoding="utf-8") as file:
@@ -15,7 +16,7 @@ def get_card_numbers(path: str) -> list:
         return []
 
 
-def get_currencies(path: str) -> list:
+def get_currencies(path: str) -> list | Any:
     """ Считывание валют из настроек в json-файле"""
     try:
         with open(path, "r", encoding="utf-8") as file:
@@ -27,7 +28,7 @@ def get_currencies(path: str) -> list:
         return []
 
 
-def get_stocks(path: str) -> list:
+def get_stocks(path: str) -> list | Any:
     """ Считывание валют из настроек в json-файле"""
     try:
         with open(path, "r", encoding="utf-8") as file:

@@ -1,7 +1,9 @@
 import datetime
 import os
+from typing import Any
 
 import requests
+
 import requests.exceptions
 from dotenv import load_dotenv
 
@@ -19,7 +21,7 @@ url_second = "https://www.alphavantage.co/query"
 url_ = "https://financialmodelingprep.com/api/v3/stock/list"
 
 
-def get_currency_rate(date_: str, currency: str = "USD") -> float:
+def get_currency_rate(date_: str, currency: str = "USD") -> float | Any:
     """Функция, возвращающая курс валюты на указанную дату
     первым аргументом принимает строку с датой в формате YYYY-MM-DD,
     вторым аргументом - код валюты, по-умолчанию "USD" """
@@ -50,7 +52,7 @@ def get_currency_rate(date_: str, currency: str = "USD") -> float:
         return float(0)
 
 
-def get_stock_price(date_line: str, stock_name: str) -> str:
+def get_stock_price(date_line: str, stock_name: str) -> str | Any:
     """ Функция принимает строку с датой формата YYYY-MM-DD HH:MM:SS и название акции,
     возвращает среднюю за месяц стоимость акции в формате строки"""
     # за некоторые дни нет данных на сайте
@@ -89,7 +91,7 @@ def get_stock_price(date_line: str, stock_name: str) -> str:
 
 
 # для тестовых прогонов:
-def get_stock_price_1(stock_name: str) -> float:
+def get_stock_price_1(stock_name: str) -> float | Any:
     try:
         payload = {"apikey": f"{api_}"}
         response = requests.get(f"{url_}", params=payload)
@@ -107,7 +109,7 @@ def get_stock_price_1(stock_name: str) -> float:
             else:
                 return float(0)
         else:
-            return ""
+            return float(0)
             external_api_logger.warning(f"Ошибка stock_price_1, status_code: {response.status_code}")
     except Exception as e:
         external_api_logger.warning(f"Ошибка{e}")
