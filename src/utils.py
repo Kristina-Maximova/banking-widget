@@ -1,12 +1,9 @@
-import pandas as pd
-import json
 import datetime
 
-import pytest
+import pandas as pd
 
+from config import path_to_file
 from src.my_logging import utils_logger
-
-from config import path_to_file, path_to_user_settings
 
 
 def read_excel_file(path: str) -> pd.DataFrame | dict:
@@ -21,10 +18,6 @@ def read_excel_file(path: str) -> pd.DataFrame | dict:
     except Exception as e:
         utils_logger.warning(f"Ошибка при чтении ecxell-файла: {e}")
         return {}
-
-
-
-
 
 
 def get_list_of_cards(df_data: pd.DataFrame) -> list:
@@ -79,7 +72,8 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str = None, stop_date_: 
             else:
                 # возвращаем поле "Дата операции" в исходный str тип
                 utils_logger.info("возвращаем столбец 'Дата операции' к исходному типу строки")
-                # filtered_data["Дата операции"] = filtered_data["Дата операции"]. apply(lambda x: x.strftime("%d.%m.%Y %H:%M:%S"))
+                # filtered_data["Дата операции"] =
+                # filtered_data["Дата операции"]. apply(lambda x: x.strftime("%d.%m.%Y %H:%M:%S"))
                 filtered_data["Дата операции"] = filtered_data["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
                 return filtered_data
     except Exception as e:
@@ -126,11 +120,14 @@ def get_top_transactions(df_data: pd.DataFrame) -> pd.DataFrame | dict:
     """ Функция для получения из датафрейма топ-5 транзакций по сумме платежа """
     if not df_data.empty:
         try:
-            selected_columns = df_data.loc[:,
-                               ["Сумма операции", "Сумма платежа", "Дата операции", "Дата платежа", "Категория",
-                                "Описание"]]
+            selected_columns = df_data.loc[:, ["Сумма операции",
+                                               "Сумма платежа",
+                                               "Дата операции",
+                                               "Дата платежа",
+                                               "Категория",
+                                               "Описание"]]
             top_transactions = selected_columns.sort_values(by=['Сумма платежа']).head(5)
-            utils_logger.info("топ_5 транзакций по сумме платежа получены")
+            utils_logger.info("топ_5 по сумме платежа получены")
             return top_transactions
         except Exception as e:
             utils_logger.warning(f"Ошибка {e}")
@@ -159,17 +156,14 @@ def get_greeting_by_time(time_string: str) -> str:
         return ""
 
 
-
-
-
 if __name__ == "__main__":
     df_data_1 = read_excel_file(path_to_file)
-    df_data_2 = filter_by_date(df_data_1,start_date_="2021-12-01 01:00:00",  stop_date_="2021-12-08 01:00:00" , to_datetime=False)
+    df_data_2 = filter_by_date(df_data_1, start_date_="2021-12-01 01:00:00", stop_date_="2021-12-08 01:00:00",
+                               to_datetime=False)
+    df_data_3 = list(df_data_2.to_dict(orient="records"))
 
-#     df_data_["Дата операции"] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True,
-#                                                format="%d.%m.%Y %H:%M:%S")
-#     df_data_["Дата операции"] = df_data_["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
+    #     df_data_["Дата операции"] = pd.to_datetime(df_data_["Дата операции"], dayfirst=True,
+    #                                                format="%d.%m.%Y %H:%M:%S")
+    #     df_data_["Дата операции"] = df_data_["Дата операции"].dt.strftime("%d.%m.%Y %H:%M:%S")
 
-    print (df_data_2.head(4))
-
-
+    print(df_data_2.head(4))

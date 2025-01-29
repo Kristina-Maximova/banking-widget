@@ -78,8 +78,9 @@ def get_stock_price(date_line: str, stock_name: str) -> str:
                 return new_result
             else:
                 return ""
-                external_api_logger.warning(f"Ошибка request-запроса stock_price, status_code: {response.status_code}")
-        except  requests.exceptions.RequestException as e:
+                external_api_logger.warning(f"Ошибка запроса: {response.status_code}")
+
+        except requests.exceptions.RequestException as e:
             external_api_logger.warning(f"Ошибка {e}")
             return ""
     except ValueError as e:
@@ -112,12 +113,10 @@ def get_stock_price_1(stock_name: str) -> float:
         external_api_logger.warning(f"Ошибка{e}")
         return float(0)
 
-
 # if __name__ == "__main__":
-    # user_stocks = ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
-    #
-    # my_date = "2023-01-19 05:44:00"
-    #
-    # a = get_stock_price_1("AMZN")
-    # print(a)
-
+# user_stocks = ["AAPL", "AMZN", "GOOGL", "MSFT", "TSLA"]
+#
+# my_date = "2023-01-19 05:44:00"
+#
+# a = get_stock_price_1("AMZN")
+# print(a)

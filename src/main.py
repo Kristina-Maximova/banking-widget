@@ -1,16 +1,16 @@
-from config import path_to_file
-from src.reports import spending_by_category
-from src.views import read_excel_file, create_main_review, create_investment_review
-
 import datetime
 
+from config import path_to_file
+from src.reports import spending_by_category
+from src.views import create_investment_review, create_main_review, read_excel_file
 
 my_dfdata = read_excel_file(path_to_file)
-my_date = "2021-07-31 5:44:00" # - строка формата ГГГГ-ММ-ДД HH:MM:SS
+my_date = "2021-07-31 5:44:00"  # - строка формата ГГГГ-ММ-ДД HH:MM:SS
 # Если для обработки брать текущую дату, раскомментировать строку:
 # my_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-my_limit = 50   # шаг округления сумм для инвест-накоплений
+my_limit = 50  # шаг округления сумм для инвест-накоплений
 my_category = "Супермаркеты"
+
 
 def main() -> list:
     """ Возвращает список из 3х json строк
@@ -28,7 +28,7 @@ def main() -> list:
     result.append(to_services)
 
     date_for_reports = date_obj.strftime("%d.%m.%Y")
-    to_reports = spending_by_category(my_dfdata, my_category, date_for_reports )
+    to_reports = spending_by_category(my_dfdata, my_category, date_for_reports)
     result.append(to_reports)
 
     return result

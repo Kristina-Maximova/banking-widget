@@ -3,9 +3,8 @@ import json
 
 import pandas as pd
 
-from config import path_to_file
 from src.my_logging import reports_logger
-from src.utils import read_excel_file, filter_by_date
+from src.utils import filter_by_date
 
 
 class Optional:
@@ -24,7 +23,7 @@ def spending_by_category(transactions: pd.DataFrame,
     (от переданной даты).
     """
     # получаем даты для фильтрации
-    if date == None:
+    if date is None:
         stop_date_obj = datetime.datetime.today()
     else:
         stop_date_obj = datetime.datetime.strptime(date, "%d.%m.%Y")

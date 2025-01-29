@@ -1,12 +1,11 @@
 import json
 from functools import wraps
 from typing import Callable
+
 from freezegun import freeze_time
-from datetime import date
 
-
-from src.my_logging import decorators_logger
 from config import path_to_file_
+from src.my_logging import decorators_logger
 
 
 def write_result(func: Callable) -> Callable:
@@ -85,5 +84,3 @@ def stop_time(date_line: str) -> Callable:
 #     return time.strftime("%Y-%m-%d")
 # a = old_time()
 # print(a)
-today = date.today()
-print(today)

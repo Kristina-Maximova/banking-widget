@@ -1,10 +1,8 @@
 import datetime
 
 import pandas as pd
-from src.decorators import write_result
+
 from src.my_logging import services_logger
-from config import path_to_file
-from src.utils import read_excel_file
 
 
 def investment_bank(month_: str, list_transactions: list, limit: int = 50) -> float:
@@ -52,17 +50,16 @@ def check_by_month(date: str, my_month: str) -> bool:
     # new_df_data = df_data_[["Дата операции", "Сумма операции"]]
     # Фильтруем по месяцу года
 
-
 # if __name__ == "__main__":
 #     new_month = "2021-12"
-    # df_data = read_excel_file(path_to_file)
-    # this_transactions = list(df_data.to_dict(orient="records"))[0:10]  # тут даты так: '31.12.2021 16:44:00'
-    # a = investment_bank(new_month, this_transactions, 50)
+# df_data = read_excel_file(path_to_file)
+# this_transactions = list(df_data.to_dict(orient="records"))[0:10]  # тут даты так: '31.12.2021 16:44:00'
+# a = investment_bank(new_month, this_transactions, 50)
 
-    # # Округляем до большего значения с заданным шагом
-    # def round_to_next(elem, limit):
-    #     num = abs(elem)
-    #     result = (num - (num % limit) + (limit if num % limit != 0 else 0)) - num
-    #     return result
-    # a = round_to_next(-0.3, 10)
-    # print(a)
+# # Округляем до большего значения с заданным шагом
+# def round_to_next(elem, limit):
+#     num = abs(elem)
+#     result = (num - (num % limit) + (limit if num % limit != 0 else 0)) - num
+#     return result
+# a = round_to_next(-0.3, 10)
+# print(a)

@@ -1,22 +1,22 @@
 import datetime
-import re
-import pandas as pd
 import json
+import re
 
-from src.services import investment_bank
-from src.utils import (read_excel_file,
-                       get_greeting_by_time,
-                       filter_by_date,
-                       get_total_spent,
-                       get_data_for_card,
-                       get_top_transactions, )
+import pandas as pd
 
-from src.settings import (get_card_numbers,
-                          get_currencies,
-                          get_stocks)
-from src.my_logging import views_logger
-from src.external_api import get_currency_rate, get_stock_price_1  # добавить get_stock_price
 from config import path_to_file, path_to_user_settings
+from src.external_api import get_currency_rate, get_stock_price_1  # добавить get_stock_price
+from src.my_logging import views_logger
+from src.services import investment_bank
+from src.settings import get_card_numbers, get_currencies, get_stocks
+from src.utils import (
+    filter_by_date,
+    get_data_for_card,
+    get_greeting_by_time,
+    get_top_transactions,
+    get_total_spent,
+    read_excel_file
+)
 
 my_cards = get_card_numbers(path_to_user_settings)  # ['*7197', '*4556']
 my_currencies = get_currencies(path_to_user_settings)  # ['USD', 'EUR']
