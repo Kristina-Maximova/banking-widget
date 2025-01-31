@@ -3,7 +3,6 @@ import os
 from typing import Any
 
 import requests
-
 import requests.exceptions
 from dotenv import load_dotenv
 

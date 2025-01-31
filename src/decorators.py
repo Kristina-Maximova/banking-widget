@@ -63,7 +63,7 @@ def write_result_to_my_file(path_to_my_file: str) -> Callable:
 def stop_time(date_line: str) -> Callable:
     """
     Останавливает время при выполнении функции
-    :argument - cтрока с датой в любом формате (12.01.2014 или 2012-01-31 12:12:12)
+    :argument - cтрока с датой в любом формате (12.01.2014 или 2012-01-31 10:12:12)
     """
 
     def my_decorator(func):

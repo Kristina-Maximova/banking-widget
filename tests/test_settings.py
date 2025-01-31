@@ -1,5 +1,5 @@
-from src.settings import get_card_numbers, get_currencies, get_stocks
 from config import path_to_user_settings
+from src.settings import get_card_numbers, get_currencies, get_stocks
 
 
 def test_get_card_numbers():

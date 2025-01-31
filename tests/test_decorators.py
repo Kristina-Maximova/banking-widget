@@ -1,8 +1,10 @@
-from unittest.mock import MagicMock
 import json
-import pytest
-from src.decorators import write_result, write_result_to_my_file, stop_time
 from datetime import date
+from unittest.mock import MagicMock
+
+import pytest
+
+from src.decorators import stop_time, write_result, write_result_to_my_file
 
 
 def test_write_result():

@@ -36,7 +36,7 @@ def get_list_of_cards(df_data: pd.DataFrame) -> list:
 
 
 def filter_by_date(df_data_: pd.DataFrame, start_date_: str | None = None, stop_date_: str | None = None,
-                   to_datetime: bool = False) -> pd.DataFrame | str :
+                   to_datetime: bool = True) -> pd.DataFrame | str:
     """ Фильтрация транзакций по интервалу дат
     :param df_data_ - датафрейм с данными по транзакциям
     :param start_date_ - строка формата ГГГГ-ММ-ДД НН:ММ:SS,
@@ -57,7 +57,6 @@ def filter_by_date(df_data_: pd.DataFrame, start_date_: str | None = None, stop_
         else:
             stop_date = datetime.datetime.strptime(stop_date_, "%Y-%m-%d %H:%M:%S")
         if start_date.strftime("%Y-%m-%d %H:%M") == stop_date.strftime("%Y-%m-%d %H:%M"):
-
             raise ValueError("Не задан диапазон времени")
 
         else:
@@ -169,5 +168,13 @@ def get_greeting_by_time(time_string: str) -> str:
         return ""
 
 
-if __name__ == "__main__":
-    df_data_1 = read_excel_file(path_to_file)
+# if __name__ == "__main__":
+#     df_data_1 = read_excel_file(path_to_file)
+#     my_start = "2021-07-01 01:00:00"
+#     my_stop = "2021-09-25 02:00:00"
+#     my_format = "%Y-%m-%d %H:%M:%S"
+#     df_data_2 = filter_by_date(df_data_1, my_start, my_stop, to_datetime=False)
+#
+#
+#
+#     print(df_data_2)

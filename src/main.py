@@ -36,3 +36,7 @@ def main() -> list:
 
 if __name__ == "__main__":
     main()
+    # result = main()
+    # print(result[0])
+    # print(result[1])
+    # print(result[2])

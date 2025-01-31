@@ -50,6 +50,7 @@ def check_by_month(date: str, my_month: str) -> bool:
     # new_df_data = df_data_[["Дата операции", "Сумма операции"]]
     # Фильтруем по месяцу года
 
+
 # if __name__ == "__main__":
 #     new_month = "2021-12"
 # df_data = read_excel_file(path_to_file)
@@ -63,3 +64,5 @@ def check_by_month(date: str, my_month: str) -> bool:
 #     return result
 # a = round_to_next(-0.3, 10)
 # print(a)
+
+

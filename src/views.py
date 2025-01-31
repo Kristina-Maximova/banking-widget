@@ -9,14 +9,7 @@ from src.external_api import get_currency_rate, get_stock_price_1  # добав�
 from src.my_logging import views_logger
 from src.services import investment_bank
 from src.settings import get_card_numbers, get_currencies, get_stocks
-from src.utils import (
-    filter_by_date,
-    get_data_for_card,
-    get_greeting_by_time,
-    get_top_transactions,
-    get_total_spent,
-    read_excel_file
-)
+from src.utils import filter_by_date, get_data_for_card, get_greeting_by_time, get_top_transactions, get_total_spent
 
 my_cards = get_card_numbers(path_to_user_settings)  # ['*7197', '*4556']
 my_currencies = get_currencies(path_to_user_settings)  # ['USD', 'EUR']
@@ -123,11 +116,10 @@ def create_investment_review(data: pd.DataFrame, date: str, limit: int = 50) -> 
         views_logger.warning(f"Данные по инвест-накоплениям не получены, {e}")
         return json.dumps({"investment": None}, ensure_ascii=False, indent=4)
 
+# if __name__ == "__main__":
+#     my_df_data = read_excel_file(path_to_file)
+#     # result = create_main_review(my_df_data, test_date)
+#     test_date = "2021-07-31 5:44:00"
+#     result_1 = create_investment_review(my_df_data, test_date, 50)
 
-if __name__ == "__main__":
-    my_df_data = read_excel_file(path_to_file)
-    test_date = "2021-07-31 5:44:00"
-    # result = create_main_review(my_df_data, test_date)
-    result_1 = create_investment_review(my_df_data, test_date, 50)
-
-    print(result_1)
+# print(result_1)

@@ -1,10 +1,17 @@
 from unittest.mock import patch
+
 import pandas as pd
 import pytest
-from src.utils import (read_excel_file, get_list_of_cards,
-                       get_data_for_card, get_total_spent,
-                       get_top_transactions, get_greeting_by_time,
-                       filter_by_date)
+
+from src.utils import (
+    filter_by_date,
+    get_data_for_card,
+    get_greeting_by_time,
+    get_list_of_cards,
+    get_top_transactions,
+    get_total_spent,
+    read_excel_file
+)
 
 
 @patch("src.utils.pd.read_excel")

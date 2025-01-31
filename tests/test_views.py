@@ -1,7 +1,8 @@
 from unittest.mock import patch
-from src.views import create_main_review, create_investment_review
 
 import pandas as pd
+
+from src.views import create_investment_review, create_main_review
 
 
 @patch("src.views.get_currency_rate", return_value=91.1)
